@@ -268,7 +268,9 @@ class SearchSheetVM(
                                 result.syncedLyrics != null || result.ttmlLyrics != null,
                             sync =
                                 (result.syncedLyrics != null || result.ttmlLyrics != null) &&
-                                    stateLayer.lyricsState.value.playingSong?.title == result.title,
+                                    stateLayer.lyricsState.value.playingSong?.title
+                                        ?.equals(getMainTitle(result.title), ignoreCase = true) ==
+                                        true,
                             selectedLines = emptyMap(),
                         )
                     }
@@ -321,8 +323,10 @@ class SearchSheetVM(
                                         (retrievedSong.syncedLyrics != null ||
                                             retrievedSong.ttmlLyrics != null) &&
                                             stateLayer.lyricsState.value.playingSong?.title
-                                                ?.equals(result.data.title, ignoreCase = true) ==
-                                                true,
+                                                ?.equals(
+                                                    getMainTitle(result.data.title),
+                                                    ignoreCase = true,
+                                                ) == true,
                                     selectedLines = emptyMap(),
                                 )
                             }
