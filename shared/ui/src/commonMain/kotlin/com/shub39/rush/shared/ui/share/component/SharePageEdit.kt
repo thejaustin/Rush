@@ -61,6 +61,8 @@ import com.shub39.rush.shared.ui.component.ColorPickerDialog
 import com.shub39.rush.shared.ui.component.ExpressiveSwitch
 import com.shub39.rush.shared.ui.component.ListItemCard
 import com.shub39.rush.shared.ui.component.ListSelect
+import com.shub39.rush.shared.ui.component.SettingSlider
+import com.shub39.rush.shared.ui.detachedItemShape
 import com.shub39.rush.shared.ui.endItemShape
 import com.shub39.rush.shared.ui.leadingItemShape
 import com.shub39.rush.shared.ui.listItemColors
@@ -79,6 +81,8 @@ fun SharePageEdit(
     onNavigateToPaywall: () -> Unit,
     state: SharePageState,
     onAction: (SharePageAction) -> Unit,
+    maxLines: Int = 6,
+    onMaxLinesChange: (Int) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     var colorPicker by remember { mutableStateOf(false) }
@@ -110,6 +114,19 @@ fun SharePageEdit(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        item {
+            ListItemCard(shape = detachedItemShape()) {
+                SettingSlider(
+                    title = stringResource(Res.string.max_lines),
+                    value = maxLines.toFloat(),
+                    onValueChange = { onMaxLinesChange(it.toInt()) },
+                    valueToShow = maxLines.toString(),
+                    steps = 13,
+                    valueRange = 2f..16f,
+                )
+            }
+        }
+
         item {
             ListItemCard(shape = leadingItemShape()) {
                 ListSelect(
@@ -252,7 +269,15 @@ fun SharePageEdit(
 
         item {
             AnimatedVisibility(
-                visible = state.cardTheme == CardTheme.CHAT,
+                visible =
+                    state.cardTheme in
+                        listOf(
+                            CardTheme.SPOTIFY,
+                            CardTheme.RUSHED,
+                            CardTheme.HYPNOTIC,
+                            CardTheme.VERTICAL,
+                            CardTheme.CHAT,
+                        ),
                 modifier = Modifier.fillParentMaxWidth(),
             ) {
                 ListItemCard(shape = middleItemShape()) {

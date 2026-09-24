@@ -37,6 +37,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.shub39.rush.shared.ui.LocalWindowSizeClass
 import com.shub39.rush.shared.ui.app.GlobalAction
 import com.shub39.rush.shared.ui.component.PageFill
+import com.shub39.rush.shared.ui.lyrics.LyricsPageAction
 import com.shub39.rush.shared.ui.lyrics.ManageSystemBars
 import com.shub39.rush.shared.ui.lyrics.section.LyricsCustomisationsPage
 import com.shub39.rush.shared.ui.lyrics.section.LyricsPage
@@ -157,6 +158,8 @@ fun RushNavDisplay(
                         ) {
                             val viewModel = koinViewModel<ShareVM>()
                             val state by viewModel.state.collectAsStateWithLifecycle()
+                            val lyricsVM = koinViewModel<LyricsVM>()
+                            val lyricsState by lyricsVM.state.collectAsStateWithLifecycle()
 
                             SharePageEdit(
                                 isProUser = globalState.isProUser,
@@ -165,6 +168,10 @@ fun RushNavDisplay(
                                 onNavigateToPaywall = {
                                     globalVM.onAction(GlobalAction.OnPaywallOpened("share_page"))
                                     topLevelBackStack.addTopLevel(Routes.Paywall)
+                                },
+                                maxLines = lyricsState.maxLines,
+                                onMaxLinesChange = {
+                                    lyricsVM.onAction(LyricsPageAction.OnMaxLinesChange(it))
                                 },
                             )
                         }
