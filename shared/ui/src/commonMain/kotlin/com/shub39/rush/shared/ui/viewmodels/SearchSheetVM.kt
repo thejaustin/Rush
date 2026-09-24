@@ -383,9 +383,10 @@ class SearchSheetVM(
             score += 0.2
         }
 
-        if (songMeta.album != null &&
-                searchResult.album != null &&
-                songMeta.album.trim().equals(searchResult.album.trim(), ignoreCase = true)) {
+        val songAlbum = songMeta.album?.trim()
+        val resultAlbum = searchResult.album?.trim()
+        if (songAlbum != null && resultAlbum != null &&
+                songAlbum.equals(resultAlbum, ignoreCase = true)) {
             score += 0.5
         }
 
