@@ -223,10 +223,13 @@ fun SharePageContent(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier.fillMaxSize(),
                         ) {
+                            val multiLineModifier =
+                                if (state.cardFit == CardFit.FIT) fitCardModifier else cardModifier
+
                             when (state.cardTheme) {
                                 SPOTIFY ->
                                     SpotifyShareCard(
-                                        modifier = cardModifier,
+                                        modifier = multiLineModifier,
                                         song = state.songDetails,
                                         sortedLines = state.selectedLines,
                                         cardColors = cardColor,
@@ -236,7 +239,7 @@ fun SharePageContent(
 
                                 RUSHED ->
                                     RushedShareCard(
-                                        modifier = cardModifier,
+                                        modifier = multiLineModifier,
                                         song = state.songDetails,
                                         sortedLines = state.selectedLines,
                                         cardColors = cardColor,
@@ -247,7 +250,7 @@ fun SharePageContent(
 
                                 HYPNOTIC ->
                                     HypnoticShareCard(
-                                        modifier = cardModifier,
+                                        modifier = multiLineModifier,
                                         song = state.songDetails,
                                         sortedLines = state.selectedLines,
                                         cardColors = cardColor,
@@ -257,7 +260,7 @@ fun SharePageContent(
 
                                 VERTICAL ->
                                     VerticalShareCard(
-                                        modifier = cardModifier,
+                                        modifier = multiLineModifier,
                                         song = state.songDetails,
                                         sortedLines = state.selectedLines,
                                         cardColors = cardColor,
@@ -317,7 +320,7 @@ fun SharePageContent(
 
                                 CHAT ->
                                     ChatCard(
-                                        modifier = if (state.cardFit == CardFit.FIT) fitCardModifier else cardModifier,
+                                        modifier = multiLineModifier,
                                         song = state.songDetails,
                                         sortedLines = state.selectedLines,
                                         cardColors = cardColor,

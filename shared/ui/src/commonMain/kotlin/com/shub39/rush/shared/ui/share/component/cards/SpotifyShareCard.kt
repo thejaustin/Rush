@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -102,22 +101,20 @@ fun SpotifyShareCard(
 
             Spacer(modifier = Modifier.padding(pxToDp(32)))
 
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(pxToDp(16))) {
+            Column(verticalArrangement = Arrangement.spacedBy(pxToDp(16))) {
                 sortedLines.forEach {
-                    item {
-                        Text(
-                            text = it.value,
-                            style =
-                                MaterialTheme.typography.bodyMedium
-                                    .copy(fontFamily = font)
-                                    .fromPx(
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 42,
-                                        letterSpacing = 0,
-                                        lineHeight = 48,
-                                    ),
-                        )
-                    }
+                    Text(
+                        text = it.value,
+                        style =
+                            MaterialTheme.typography.bodyMedium
+                                .copy(fontFamily = font)
+                                .fromPx(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 42,
+                                    letterSpacing = 0,
+                                    lineHeight = 48,
+                                ),
+                    )
                 }
             }
 

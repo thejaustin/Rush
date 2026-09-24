@@ -27,8 +27,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -86,8 +84,8 @@ fun RushedShareCard(
         Column(
             modifier = Modifier.fillMaxWidth().padding(pxToDp(48)).align(Alignment.BottomStart)
         ) {
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(pxToDp(16))) {
-                items(sortedLines.values.toList()) {
+            Column(verticalArrangement = Arrangement.spacedBy(pxToDp(16))) {
+                sortedLines.values.forEach {
                     Card(colors = cardColors, shape = cardCorners) {
                         Text(
                             text = it,
