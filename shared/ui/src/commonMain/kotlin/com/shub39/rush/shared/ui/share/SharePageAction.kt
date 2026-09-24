@@ -18,6 +18,7 @@ package com.shub39.rush.shared.ui.share
 
 import com.shub39.rush.shared.core.enums.AlbumArtShape
 import com.shub39.rush.shared.core.enums.CardColors
+import com.shub39.rush.shared.core.enums.CardFit
 import com.shub39.rush.shared.core.enums.CardTheme
 import com.shub39.rush.shared.core.enums.CornerRadius
 
@@ -39,4 +40,6 @@ sealed interface SharePageAction {
     data class OnUpdateCardBackground(val color: Int) : SharePageAction
 
     data class OnToggleFullScreen(val fullScreen: Boolean) : SharePageAction
+
+    data class OnUpdateCardFit(val fit: CardFit) : SharePageAction
 }

@@ -26,6 +26,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.shub39.rush.shared.core.enums.AlbumArtShape
 import com.shub39.rush.shared.core.enums.CardColors
+import com.shub39.rush.shared.core.enums.CardFit
 import com.shub39.rush.shared.core.enums.CardTheme
 import com.shub39.rush.shared.core.enums.CornerRadius
 import com.shub39.rush.shared.core.interfaces.SharePagePreferences
@@ -44,6 +45,17 @@ class SharePagePreferencesImpl(private val dataStore: DataStore<Preferences>) :
         private val cardContent = intPreferencesKey("card_content")
         private val albumArtShapeKey = stringPreferencesKey("album_art_shape")
         private val fullscreenShareKey = booleanPreferencesKey("fullscreen_share")
+        private val cardFitKey = stringPreferencesKey("card_fit")
+    }
+
+    override fun getCardFitFlow(): Flow<CardFit> =
+        dataStore.data.map { preferences ->
+            valueOfOrNull<CardFit>(preferences[cardFitKey] ?: CardFit.STANDARD.name)
+                ?: CardFit.STANDARD
+        }
+
+    override suspend fun updateCardFit(newCardFit: CardFit) {
+        dataStore.edit { settings -> settings[cardFitKey] = newCardFit.name }
     }
 
     override fun getAlbumArtShapeFlow(): Flow<AlbumArtShape> =

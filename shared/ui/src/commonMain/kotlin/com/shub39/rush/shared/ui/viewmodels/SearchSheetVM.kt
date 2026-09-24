@@ -310,8 +310,9 @@ class SearchSheetVM(
                                     sync =
                                         (retrievedSong.syncedLyrics != null ||
                                             retrievedSong.ttmlLyrics != null) &&
-                                            stateLayer.lyricsState.value.playingSong?.title ==
-                                                result.data.title,
+                                            stateLayer.lyricsState.value.playingSong?.title
+                                                ?.equals(result.data.title, ignoreCase = true) ==
+                                                true,
                                     selectedLines = emptyMap(),
                                 )
                             }
@@ -350,25 +351,43 @@ class SearchSheetVM(
     private fun getResultScore(songMeta: SongMeta, searchResult: SearchResult): Double {
         var score = 0.0
 
-        if (songMeta.title == searchResult.title) {
+        val songTitle = songMeta.title.trim()
+        val resultTitle = searchResult.title.trim()
+
+        if (songTitle.equals(resultTitle, ignoreCase = true)) {
             score += 0.5
-        } else if (songMeta.title.startsWith(searchResult.title)) {
+        } else if (songTitle.startsWith(resultTitle, ignoreCase = true)) {
             score += 0.4
-        } else if (searchResult.title.startsWith(songMeta.title)) {
+        } else if (resultTitle.startsWith(songTitle, ignoreCase = true)) {
             score += 0.3
+        } else if (songTitle.contains(resultTitle, ignoreCase = true) ||
+                resultTitle.contains(songTitle, ignoreCase = true)) {
+            score += 0.2
         }
 
         if (songMeta.artist == null) {
             return score
-        } else if (songMeta.artist == searchResult.artist) {
-            score += 0.5
-        } else if (songMeta.artist!!.startsWith(searchResult.artist)) {
-            score += 0.4
-        } else if (searchResult.artist.startsWith(songMeta.artist!!)) {
-            score += 0.3
         }
 
-        if (songMeta.album == searchResult.album) score += 0.5
+        val songArtist = songMeta.artist!!.trim()
+        val resultArtist = searchResult.artist.trim()
+
+        if (songArtist.equals(resultArtist, ignoreCase = true)) {
+            score += 0.5
+        } else if (songArtist.startsWith(resultArtist, ignoreCase = true)) {
+            score += 0.4
+        } else if (resultArtist.startsWith(songArtist, ignoreCase = true)) {
+            score += 0.3
+        } else if (songArtist.contains(resultArtist, ignoreCase = true) ||
+                resultArtist.contains(songArtist, ignoreCase = true)) {
+            score += 0.2
+        }
+
+        if (songMeta.album != null &&
+                searchResult.album != null &&
+                songMeta.album.trim().equals(searchResult.album.trim(), ignoreCase = true)) {
+            score += 0.5
+        }
 
         return score
     }

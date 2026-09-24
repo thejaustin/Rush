@@ -1,3 +1,8 @@
+> [!NOTE]
+> **This is a community fork of [shub39/Rush](https://github.com/shub39/Rush) maintained by [@thejaustin](https://github.com/thejaustin).**
+> It fixes bugs and restores features removed upstream. Releases are available at [thejaustin/Rush](https://github.com/thejaustin/Rush/releases).
+> To follow the upstream project or report issues there, visit the [original repo](https://github.com/shub39/Rush).
+
 > [!CAUTION]
 > ## [Keep Android Open](https://keepandroidopen.org/)
 > ###  Your phone is about to stop being yours.
@@ -8,8 +13,7 @@
 
 ![](fastlane/metadata/android/en-US/images/featureGraphic.png)
 
-[<img alt="Get it on Google Play" src="badges/playstore.png" width="180px">](https://play.google.com/store/apps/details?id=com.shub39.rush.play)
-[<img alt="Get it on github" src="badges/github.png" width="180px">](https://github.com/shub39/Rush/releases)
+[<img alt="Get it on github" src="badges/github.png" width="180px">](https://github.com/thejaustin/Rush/releases)
 [<img alt="Get it on izzyondroid" src="badges/izzyondroid.png" width="180px">](https://apt.izzysoft.de/fdroid/index/apk/com.shub39.rush)
 [<img alt="Get it on fdroid" src="badges/fdroid.png" width="180px">](https://f-droid.org/en/packages/com.shub39.rush/)
 

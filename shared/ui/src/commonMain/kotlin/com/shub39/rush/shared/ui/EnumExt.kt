@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.shub39.rush.shared.core.enums.AlbumArtShape
 import com.shub39.rush.shared.core.enums.AppTheme
 import com.shub39.rush.shared.core.enums.CardColors
+import com.shub39.rush.shared.core.enums.CardFit
 import com.shub39.rush.shared.core.enums.CardTheme
 import com.shub39.rush.shared.core.enums.CornerRadius
 import com.shub39.rush.shared.core.enums.Fonts
@@ -127,6 +128,14 @@ fun CardTheme.toStringRes(): StringResource {
         QUOTE -> Res.string.quote
         MESSY -> Res.string.messy
         BRAT -> Res.string.brat
+        CHAT -> Res.string.chat
+    }
+}
+
+fun CardFit.toStringRes(): StringResource {
+    return when (this) {
+        CardFit.FIT -> Res.string.fit
+        CardFit.STANDARD -> Res.string.standard
     }
 }
 

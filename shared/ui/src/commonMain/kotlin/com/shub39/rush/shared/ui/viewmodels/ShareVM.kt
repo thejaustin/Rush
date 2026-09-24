@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shub39.rush.shared.core.enums.AlbumArtShape
 import com.shub39.rush.shared.core.enums.CardColors
+import com.shub39.rush.shared.core.enums.CardFit
 import com.shub39.rush.shared.core.enums.CardTheme
 import com.shub39.rush.shared.core.enums.CornerRadius
 import com.shub39.rush.shared.core.interfaces.AnalyticsWrapper
@@ -101,6 +102,11 @@ class ShareVM(
                     .getFullscreenShare()
                     .onEach { fullScreen -> _state.update { it.copy(fullScreen = fullScreen) } }
                     .launchIn(this)
+
+                datastore
+                    .getCardFitFlow()
+                    .onEach { fit -> _state.update { it.copy(cardFit = fit) } }
+                    .launchIn(this)
             }
         }
 
@@ -138,6 +144,8 @@ class ShareVM(
                 is SharePageAction.OnToggleFullScreen ->
                     datastore.updateFullscreenShare(action.fullScreen)
 
+                is SharePageAction.OnUpdateCardFit -> datastore.updateCardFit(action.fit)
+
                 SharePageAction.OnRandomize -> {
                     when (val newCardColor = CardColors.entries.random()) {
                         CardColors.CUSTOM -> {
@@ -165,6 +173,7 @@ class ShareVM(
                     datastore.updateCardTheme(CardTheme.entries.random())
                     datastore.updateAlbumArtShape(AlbumArtShape.entries.random())
                     datastore.updateFullscreenShare(Random.nextBoolean())
+                    datastore.updateCardFit(CardFit.entries.random())
                 }
             }
         }

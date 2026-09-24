@@ -28,6 +28,7 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -48,7 +49,15 @@ class GeniusScraper {
                 requestTimeoutMillis = 20_000
             }
 
-            defaultRequest { contentType(ContentType.Application.Json) }
+            defaultRequest {
+                contentType(ContentType.Application.Json)
+                header(
+                    "User-Agent",
+                    "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
+                )
+                header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+                header("Accept-Language", "en-US,en;q=0.9")
+            }
         }
     }
 

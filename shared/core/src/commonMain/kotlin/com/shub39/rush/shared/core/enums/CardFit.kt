@@ -16,15 +16,7 @@
  */
 package com.shub39.rush.shared.core.enums
 
-enum class CardTheme {
-    SPOTIFY,
-    RUSHED,
-    VERTICAL,
-    COUPLET,
-    ALBUM_ART,
-    HYPNOTIC,
-    QUOTE,
-    MESSY,
-    BRAT,
-    CHAT,
+enum class CardFit {
+    FIT,
+    STANDARD,
 }

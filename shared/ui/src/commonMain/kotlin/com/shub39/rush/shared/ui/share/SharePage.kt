@@ -63,6 +63,7 @@ import androidx.compose.ui.tooling.preview.PreviewWrapper
 import androidx.compose.ui.unit.dp
 import com.materialkolor.ktx.blend
 import com.shub39.rush.shared.core.dataclasses.SongDetails
+import com.shub39.rush.shared.core.enums.CardFit
 import com.shub39.rush.shared.core.enums.CardTheme
 import com.shub39.rush.shared.ui.LocalWindowSizeClass
 import com.shub39.rush.shared.ui.RushPreviewWrapper
@@ -70,6 +71,7 @@ import com.shub39.rush.shared.ui.WindowSize.Companion.isExpanded
 import com.shub39.rush.shared.ui.pxToDp
 import com.shub39.rush.shared.ui.share.component.cards.AlbumArt
 import com.shub39.rush.shared.ui.share.component.cards.BratShareCard
+import com.shub39.rush.shared.ui.share.component.cards.ChatCard
 import com.shub39.rush.shared.ui.share.component.cards.CoupletShareCard
 import com.shub39.rush.shared.ui.share.component.cards.HypnoticShareCard
 import com.shub39.rush.shared.ui.share.component.cards.MessyCard
@@ -158,6 +160,13 @@ fun SharePageContent(
                 drawLayer(cardGraphicsLayer)
             }
             .heightIn(max = pxToDp(1900))
+
+    val fitCardModifier =
+        Modifier.requiredWidth(pxToDp(720))
+            .drawWithContent {
+                cardGraphicsLayer.record { this@drawWithContent.drawContent() }
+                drawLayer(cardGraphicsLayer)
+            }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -304,6 +313,16 @@ fun SharePageContent(
                                         sortedLines = state.selectedLines,
                                         cardColors = cardColor,
                                         cardCorners = cardCorners,
+                                    )
+
+                                CHAT ->
+                                    ChatCard(
+                                        modifier = if (state.cardFit == CardFit.FIT) fitCardModifier else cardModifier,
+                                        song = state.songDetails,
+                                        sortedLines = state.selectedLines,
+                                        cardColors = cardColor,
+                                        cardCorners = cardCorners,
+                                        albumArtShape = state.albumArtShape.toMaterialShape(),
                                     )
                             }
                         }

@@ -53,6 +53,7 @@ import androidx.compose.ui.tooling.preview.PreviewWrapper
 import androidx.compose.ui.unit.dp
 import com.shub39.rush.shared.core.enums.AlbumArtShape
 import com.shub39.rush.shared.core.enums.CardColors
+import com.shub39.rush.shared.core.enums.CardFit
 import com.shub39.rush.shared.core.enums.CardTheme
 import com.shub39.rush.shared.core.enums.CornerRadius
 import com.shub39.rush.shared.ui.RushPreviewWrapper
@@ -246,6 +247,30 @@ fun SharePageEdit(
                         )
                     },
                 )
+            }
+        }
+
+        item {
+            AnimatedVisibility(
+                visible = state.cardTheme == CardTheme.CHAT,
+                modifier = Modifier.fillParentMaxWidth(),
+            ) {
+                ListItemCard(shape = middleItemShape()) {
+                    ListSelect(
+                        enabled = isProUser,
+                        title = stringResource(Res.string.card_fit),
+                        options = CardFit.entries.toList(),
+                        selected = state.cardFit,
+                        onSelectedChange = { onAction(SharePageAction.OnUpdateCardFit(it)) },
+                        labelProvider = {
+                            Text(
+                                text = stringResource(it.toStringRes()),
+                                maxLines = 1,
+                                modifier = Modifier.basicMarquee(),
+                            )
+                        },
+                    )
+                }
             }
         }
 
