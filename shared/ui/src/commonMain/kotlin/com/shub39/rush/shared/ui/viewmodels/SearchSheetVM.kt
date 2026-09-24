@@ -83,7 +83,14 @@ class SearchSheetVM(
         stateLayer.lyricsState
             .map { it.autoChange }
             .distinctUntilChanged()
-            .onEach { state -> if (state) observeSongInfo() else observeSongInfoJob?.cancel() }
+            .onEach { enabled ->
+                if (enabled) {
+                    _lastSearched.update { "" }
+                    observeSongInfo()
+                } else {
+                    observeSongInfoJob?.cancel()
+                }
+            }
             .launchIn(viewModelScope)
     }
 
@@ -97,7 +104,9 @@ class SearchSheetVM(
                         stateLayer.lyricsState.update { it.copy(playingSong = songInfo) }
 
                         if (stateLayer.lyricsState.value.autoChange) {
-                            searchSong("${songInfo.title} ${songInfo.artist}".trim())
+                            val query = listOfNotNull(songInfo.title.ifBlank { null }, songInfo.artist)
+                                .joinToString(" ")
+                            searchSong(query)
                         }
                     }
                     .launchIn(this)

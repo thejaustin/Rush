@@ -46,6 +46,7 @@ actual object MediaListener {
     private var initialised = false
     private var coroutineScope = CoroutineScope(Dispatchers.IO)
     private var positionUpdateJob: Job? = null
+    private var spotifyDelayJob: Job? = null
 
     actual val playbackSpeedFlow: MutableSharedFlow<Float> =
         MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
@@ -120,13 +121,16 @@ actual object MediaListener {
         controllers?.filterNotNull()?.forEach { controller ->
             RushLogger.d("MediaListener", "Session: $controller (${controller.sessionToken})")
 
-            // Workaround for spotify, dunno if this is the most elegant solution but works :)
+            // Spotify's MediaSession is active before metadata is populated; delay to let it settle.
+            // Track the job so a non-Spotify session activating in the window cancels it.
             if (controller.packageName.contains("spotify")) {
-                coroutineScope.launch {
+                spotifyDelayJob?.cancel()
+                spotifyDelayJob = coroutineScope.launch {
                     delay(2000.milliseconds)
                     setActiveMediaSession(controller)
                 }
             } else if (isActive(controller.playbackState)) {
+                spotifyDelayJob?.cancel()
                 setActiveMediaSession(controller)
             }
 
