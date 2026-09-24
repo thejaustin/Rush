@@ -23,6 +23,7 @@ import com.shub39.rush.shared.core.dataclasses.ExtractedColors
 import com.shub39.rush.shared.core.dataclasses.SearchResult
 import com.shub39.rush.shared.core.dataclasses.SongMeta
 import com.shub39.rush.shared.core.enums.Sources
+import com.shub39.rush.shared.core.getMainTitle
 import com.shub39.rush.shared.core.interfaces.AnalyticsWrapper
 import com.shub39.rush.shared.core.interfaces.AnalyticsWrapper.Companion.AnalyticsEvent
 import com.shub39.rush.shared.core.interfaces.SongRepository
@@ -353,15 +354,25 @@ class SearchSheetVM(
 
         val songTitle = songMeta.title.trim()
         val resultTitle = searchResult.title.trim()
+        // Genius titles often carry extra metadata like "(feat. X)" or "(Taylor's Version)".
+        // The playing song's title has already been cleaned by getMainTitle(); clean the result
+        // title too so those annotations don't artificially lower the score.
+        val cleanedResultTitle = getMainTitle(resultTitle)
 
         if (songTitle.equals(resultTitle, ignoreCase = true)) {
             score += 0.5
-        } else if (songTitle.startsWith(resultTitle, ignoreCase = true)) {
+        } else if (songTitle.equals(cleanedResultTitle, ignoreCase = true)) {
+            score += 0.48
+        } else if (songTitle.startsWith(resultTitle, ignoreCase = true) ||
+                songTitle.startsWith(cleanedResultTitle, ignoreCase = true)) {
             score += 0.4
-        } else if (resultTitle.startsWith(songTitle, ignoreCase = true)) {
-            score += 0.3
+        } else if (resultTitle.startsWith(songTitle, ignoreCase = true) ||
+                cleanedResultTitle.startsWith(songTitle, ignoreCase = true)) {
+            score += 0.35
         } else if (songTitle.contains(resultTitle, ignoreCase = true) ||
-                resultTitle.contains(songTitle, ignoreCase = true)) {
+                resultTitle.contains(songTitle, ignoreCase = true) ||
+                songTitle.contains(cleanedResultTitle, ignoreCase = true) ||
+                cleanedResultTitle.contains(songTitle, ignoreCase = true)) {
             score += 0.2
         }
 

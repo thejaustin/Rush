@@ -67,16 +67,8 @@ class GeniusScraper {
         val dumbInstances =
             listOf(
                 "dumb.ducks.party/",
-                "dumb.privacydev.net/",
-                "dumb.hyperreal.coffee/",
-                "dumb.privacyfucking.rocks/",
-                "sing.whatever.social/",
                 "dumb.canine.tools/",
-                "lyr.dc09.ru/",
-                "db.kuuro.net/",
-                "genius.fsky.io/",
                 "dumb.artemislena.eu/",
-                "dumb.lunar.icu/",
                 "dumb.bloat.cat/",
                 "dumb.jeikobu.net/",
             )
@@ -132,6 +124,11 @@ class GeniusScraper {
                     }
                 }
 
+                if (data.isBlank()) {
+                    RushLogger.e(TAG, "Parsed empty lyrics from genius.com — likely a bot-block page")
+                    return Result.Error(SourceError.Data.PARSE_ERROR)
+                }
+
                 return Result.Success(data)
             }
 
@@ -184,7 +181,11 @@ class GeniusScraper {
                         }
                         .trim()
 
-                Result.Success(data)
+                if (data.isBlank()) {
+                    Result.Error(SourceError.Data.PARSE_ERROR)
+                } else {
+                    Result.Success(data)
+                }
             }
 
             is Result.Error -> Result.Error(error = response.error, message = response.message)
