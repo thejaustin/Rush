@@ -331,7 +331,7 @@ class LyricsVM(
                     song.lyrics.associate { entry ->
                         romanization.romanize(entry.value)?.let { romanized ->
                             entry.key to romanized
-                        } ?: (entry.key to "")
+                        } ?: (entry.key to entry.value)
                     }
 
                 // Genius lyrics — offset to avoid collision with LRCLIB keys
@@ -339,7 +339,7 @@ class LyricsVM(
                     song.geniusLyrics?.associate { entry ->
                         romanization.romanize(entry.value)?.let { romanized ->
                             entry.key to romanized
-                        } ?: (entry.key to "")
+                        } ?: (entry.key to entry.value)
                     } ?: emptyMap()
 
                 // Synced lyrics — time-based keys
@@ -347,7 +347,7 @@ class LyricsVM(
                     song.syncedLyrics?.associate { lyric ->
                         romanization.romanize(lyric.text)?.let { romanized ->
                             lyric.time to romanized
-                        } ?: (lyric.time to "")
+                        } ?: (lyric.time to lyric.text)
                     } ?: emptyMap()
 
                 // TTML lyrics — startTime in ms as key
@@ -355,7 +355,7 @@ class LyricsVM(
                     song.ttmlLyrics?.associate { parsedLine ->
                         romanization.romanize(parsedLine.text)?.let { romanized ->
                             parsedLine.startTime to romanized
-                        } ?: (parsedLine.startTime to "")
+                        } ?: (parsedLine.startTime to parsedLine.text)
                     } ?: emptyMap()
 
                 _state.update {
