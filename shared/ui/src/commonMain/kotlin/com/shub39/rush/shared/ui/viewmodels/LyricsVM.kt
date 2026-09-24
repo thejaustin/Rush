@@ -263,7 +263,12 @@ class LyricsVM(
                     lyricsPrefs.setFullScreen(action.pref)
                 }
 
-                is LyricsPageAction.OnMaxLinesChange -> lyricsPrefs.updateMaxLines(action.lines)
+                is LyricsPageAction.OnMaxLinesChange -> {
+                    lyricsPrefs.updateMaxLines(action.lines)
+                    stateLayer.sharePageState.update {
+                        it.copy(selectedLines = it.selectedLines.sortMapByKeys(take = action.lines))
+                    }
+                }
 
                 LyricsPageAction.OnPauseOrResume ->
                     MediaListener.pauseOrResume(_playbackInfo.value.speed == 0f)
