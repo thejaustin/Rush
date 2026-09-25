@@ -94,17 +94,18 @@ fun MessyCard(
     val firstLine = sortedLines.values.firstOrNull() ?: "Woah..."
     val words =
         remember(seed, firstLine) {
+            val rng = Random(seed)
             firstLine
                 .split(Regex("\\s+"))
                 .filter { it.isNotBlank() }
                 .map {
                     Word(
-                        text = if (Random.nextBoolean()) it.uppercase() else it.lowercase(),
-                        fontWeight = Random.nextInt(3, 10) * 100,
-                        fontSize = Random.nextInt(4, 8) * 10,
-                        fontWidth = (Random.nextInt(5, 12) * 10).toFloat(),
-                        angle = Random.nextInt(-10, 10),
-                        highLight = Random.nextBoolean(),
+                        text = if (rng.nextBoolean()) it.uppercase() else it.lowercase(),
+                        fontWeight = rng.nextInt(3, 10) * 100,
+                        fontSize = rng.nextInt(4, 8) * 10,
+                        fontWidth = (rng.nextInt(5, 12) * 10).toFloat(),
+                        angle = rng.nextInt(-10, 10),
+                        highLight = rng.nextBoolean(),
                     )
                 }
         }
