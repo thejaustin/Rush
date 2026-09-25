@@ -104,11 +104,8 @@ fun updateSelectedLines(
 }
 
 fun getCurrentLyricIndex(playbackPosition: Long, lyrics: List<Lyric>): Int {
-    return if (lyrics.indexOfLast { it.time <= playbackPosition } < 0) {
-        0
-    } else {
-        lyrics.indexOfLast { it.time <= playbackPosition }
-    }
+    val index = lyrics.indexOfLast { it.time <= playbackPosition }
+    return if (index < 0) 0 else index
 }
 
 fun calculateLineProgress(currentTime: Long, startTime: Double, nextTime: Double?): Float {
