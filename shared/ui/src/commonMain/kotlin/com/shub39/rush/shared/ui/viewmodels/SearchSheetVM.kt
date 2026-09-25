@@ -188,25 +188,26 @@ class SearchSheetVM(
                     stateLayer.lyricsState.update { it.copy(searchState = SearchState.Idle) }
                 }
 
-                if (
-                    fetch &&
+                if (fetch) {
+                    if (
                         stateLayer.lyricsState.value.playingSong != null &&
-                        _state.value.searchResults.isNotEmpty()
-                ) {
-                    val resultScores =
-                        _state.value.searchResults.associateWith {
-                            getResultScore(
-                                songMeta = stateLayer.lyricsState.value.playingSong!!,
-                                searchResult = it,
-                            )
-                        }
+                            _state.value.searchResults.isNotEmpty()
+                    ) {
+                        val resultScores =
+                            _state.value.searchResults.associateWith {
+                                getResultScore(
+                                    songMeta = stateLayer.lyricsState.value.playingSong!!,
+                                    searchResult = it,
+                                )
+                            }
 
-                    if (resultScores.isNotEmpty()) {
-                        if (resultScores.maxBy { it.value }.value > 0.0) {
-                            fetchLyrics(resultScores.maxBy { it.value }.key.id)
+                        if (resultScores.isNotEmpty()) {
+                            if (resultScores.maxBy { it.value }.value > 0.0) {
+                                fetchLyrics(resultScores.maxBy { it.value }.key.id)
+                            } else searchFailedPrompt()
                         } else searchFailedPrompt()
                     } else searchFailedPrompt()
-                } else searchFailedPrompt()
+                }
             }
     }
 

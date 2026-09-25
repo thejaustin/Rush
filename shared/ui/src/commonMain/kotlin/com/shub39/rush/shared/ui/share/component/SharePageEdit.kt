@@ -221,7 +221,9 @@ fun SharePageEdit(
                         modifier = Modifier.fillParentMaxWidth(),
                     )
 
-                    Button(onClick = onNavigateToPaywall) { Text(text = "Unlock more with Pro") }
+                    Button(onClick = onNavigateToPaywall) {
+                        Text(text = stringResource(Res.string.unlock_more_with_pro))
+                    }
                 }
             }
         }
