@@ -223,7 +223,13 @@ fun SavedPage(
                         .fillMaxSize()
             ) {
                 if (state.songsAsc.isEmpty()) {
-                    Empty()
+                    Empty(
+                        modifier =
+                            Modifier.padding(
+                                top = paddingValues.calculateTopPadding(),
+                                bottom = paddingValues.calculateBottomPadding() + 60.dp,
+                            )
+                    )
                 } else {
                     AnimatedContent(targetState = state.sortOrder) { sortOrder ->
                         val songs =

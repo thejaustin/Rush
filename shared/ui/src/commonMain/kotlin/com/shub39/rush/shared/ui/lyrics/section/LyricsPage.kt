@@ -288,7 +288,7 @@ fun LyricsPageContent(
                                                                 LyricsBackground.ALBUM_ART
                                                 ) {
                                                     ArtFromUrl(
-                                                        imageUrl = lyricsState.song.artUrl!!,
+                                                        imageUrl = lyricsState.song.artUrl,
                                                         highlightColor = cardContent,
                                                         baseColor = Color.Transparent,
                                                         modifier =
@@ -315,7 +315,7 @@ fun LyricsPageContent(
                                                     visible = top <= 2 && !state.sync
                                                 ) {
                                                     ArtFromUrl(
-                                                        imageUrl = lyricsState.song.artUrl!!,
+                                                        imageUrl = lyricsState.song.artUrl,
                                                         highlightColor = cardContent,
                                                         baseColor = Color.Transparent,
                                                         contentScale = ContentScale.Crop,
@@ -429,7 +429,7 @@ fun LyricsPageContent(
                                                 horizontalAlignment = Alignment.Start,
                                             ) {
                                                 ArtFromUrl(
-                                                    imageUrl = lyricsState.song.artUrl!!,
+                                                    imageUrl = lyricsState.song.artUrl,
                                                     highlightColor = cardContent,
                                                     baseColor = Color.Transparent,
                                                     contentScale = ContentScale.Fit,

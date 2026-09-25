@@ -216,7 +216,7 @@ fun LookAndFeelPage(
                                 )
 
                                 Button(onClick = onNavigateToPaywall) {
-                                    Text(text = "Unlock more with Pro")
+                                    Text(text = stringResource(Res.string.unlock_more_with_pro))
                                 }
                             }
                         }
