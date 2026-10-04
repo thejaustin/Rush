@@ -16,7 +16,6 @@
  */
 package com.shub39.rush.shared.ui.lyrics.component
 
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -141,25 +140,23 @@ fun Actions(
             state.source == Sources.LRCLIB &&
             notificationAccess
     ) {
-        Row {
-            IconButton(
-                onClick = { action(LyricsPageAction.OnSync(!state.sync)) },
-                colors =
-                    if (state.sync) {
-                        IconButtonDefaults.iconButtonColors(
-                            contentColor = cardBackground,
-                            containerColor = cardContent,
-                        )
-                    } else {
-                        IconButtonDefaults.iconButtonColors()
-                    },
-            ) {
-                Icon(
-                    painter = painterResource(Res.drawable.sync),
-                    contentDescription = "Synced Lyrics",
-                    modifier = Modifier.size(20.dp),
-                )
-            }
+        IconButton(
+            onClick = { action(LyricsPageAction.OnSync(!state.sync)) },
+            colors =
+                if (state.sync) {
+                    IconButtonDefaults.iconButtonColors(
+                        contentColor = cardBackground,
+                        containerColor = cardContent,
+                    )
+                } else {
+                    IconButtonDefaults.iconButtonColors()
+                },
+        ) {
+            Icon(
+                painter = painterResource(Res.drawable.sync),
+                contentDescription = "Synced Lyrics",
+                modifier = Modifier.size(20.dp),
+            )
         }
     }
 
