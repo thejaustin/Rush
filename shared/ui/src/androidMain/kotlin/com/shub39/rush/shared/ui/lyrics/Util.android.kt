@@ -37,7 +37,7 @@ actual fun calculateGlowMultiplier(waveData: List<Byte>?): Float {
 actual fun ManageSystemBars(fullscreen: Boolean) {
     val view = LocalView.current
 
-    DisposableEffect(view) {
+    DisposableEffect(view, fullscreen) {
         updateSystemBars(view, fullscreen)
         onDispose { resetSystemBars(view) }
     }
