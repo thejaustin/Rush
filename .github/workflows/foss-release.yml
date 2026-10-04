@@ -59,17 +59,7 @@ jobs:
           echo "Changelog extracted to commit.txt"
 
       - name: Cook KeyStore
-        run: |
-          echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > $GITHUB_WORKSPACE/signing-key-input.jks
-          keytool -importkeystore \
-            -srckeystore $GITHUB_WORKSPACE/signing-key-input.jks \
-            -destkeystore $GITHUB_WORKSPACE/signing-key.jks \
-            -deststoretype pkcs12 \
-            -J-Dkeystore.pkcs12.legacy \
-            -srcstorepass "${{ secrets.KEYSTORE_PASSWORD }}" \
-            -deststorepass "${{ secrets.KEYSTORE_PASSWORD }}" \
-            -noprompt 2>&1 || \
-          cp $GITHUB_WORKSPACE/signing-key-input.jks $GITHUB_WORKSPACE/signing-key.jks
+        run: echo "${{ secrets.KEYSTORE_FILE }}" | base64 -d > $GITHUB_WORKSPACE/signing-key.jks
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
