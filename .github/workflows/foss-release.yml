@@ -100,10 +100,12 @@ jobs:
           files: ${{ env.APK_PATH }}
 
       - name: Notify on Discord
+        continue-on-error: true
         shell: bash
         env:
           WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
+          [ -z "$WEBHOOK" ] && exit 0
           message=$(echo "**New Rush Release** **${{ env.VERSION_NAME }}** \nhttps://github.com/thejaustin/Rush/releases")
           curl -F "payload_json={\"content\":\"${message}\"}" \
-          ${{ env.WEBHOOK }}
+          "$WEBHOOK"
