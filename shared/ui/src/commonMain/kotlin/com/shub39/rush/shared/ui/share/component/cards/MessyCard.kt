@@ -91,7 +91,7 @@ fun MessyCard(
 ) {
     val artistFont = FontFamily(Font(Res.font.google_sans_flex))
 
-    val firstLine = sortedLines.values.firstOrNull() ?: "Woah..."
+    val firstLine = sortedLines.values.joinToString(" ").ifEmpty { "Woah..." }
     val words =
         remember(seed, firstLine) {
             val rng = Random(seed)

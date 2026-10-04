@@ -279,6 +279,7 @@ fun SharePageEdit(
                             CardTheme.HYPNOTIC,
                             CardTheme.VERTICAL,
                             CardTheme.CHAT,
+                            CardTheme.MESSY,
                         ),
                 modifier = Modifier.fillParentMaxWidth(),
             ) {

@@ -191,11 +191,20 @@ fun SharePageContent(
             val cardHeight = pxToDp(1920)
             val cardWidth = pxToDp(1080)
 
-            val fitScale = minOf(maxWidth / cardWidth, maxHeight / cardHeight).coerceAtMost(1f)
+            val toolbarReserved by animateDpAsState(
+                targetValue = if (!isEditing) 104.dp else 0.dp,
+                label = "toolbarReserved",
+                animationSpec = MaterialTheme.motionScheme.fastEffectsSpec(),
+            )
+            val effectiveHeight = (maxHeight - toolbarReserved).coerceAtLeast(1.dp)
+            val fitScale = minOf(maxWidth / cardWidth, effectiveHeight / cardHeight).coerceAtMost(1f)
             val zoomState = rememberZoomState()
 
             Box(
-                modifier = Modifier.fillMaxSize().zoomable(zoomState),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = toolbarReserved)
+                    .zoomable(zoomState),
                 contentAlignment = Alignment.Center,
             ) {
                 Box(modifier = Modifier.size(cardWidth * fitScale, cardHeight * fitScale)) {
@@ -290,7 +299,7 @@ fun SharePageContent(
 
                                 MESSY ->
                                     MessyCard(
-                                        modifier = cardModifier,
+                                        modifier = multiLineModifier,
                                         song = state.songDetails,
                                         sortedLines = state.selectedLines,
                                         cardColors = cardColor,

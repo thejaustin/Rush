@@ -63,7 +63,7 @@ fun BratShareCard(
     Card(modifier = modifier, colors = cardColors, shape = cardCorners) {
         Box(modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = sortedLines.values.firstOrNull() ?: "Woah...",
+                text = sortedLines.values.joinToString("\n").ifEmpty { "Woah..." },
                 style =
                     MaterialTheme.typography.displayMedium
                         .copy(fontFamily = lyricsFont, textAlign = TextAlign.Justify)
