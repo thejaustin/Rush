@@ -113,7 +113,6 @@ class RushRepository(
                 val results = result.data.response.hits.filter { it.type == "song" }
                 val searchResults =
                     results
-                        .filter { it.type == "song" }
                         .map { hit ->
                             SearchResult(
                                 title = hit.result.title,
