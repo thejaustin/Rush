@@ -22,16 +22,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Nucleus
-        uses: kdroidFilter/Nucleus/.github/actions/setup-nucleus@main
+      - name: Setup JDK 21
+        uses: actions/setup-java@v4
         with:
-          jbr-version: '25.0.2b329.66'
-          packaging-tools: 'true'
-          setup-gradle: 'true'
+          distribution: temurin
+          java-version: 21
+          cache: 'gradle'
 
       - name: Extract Version Name from Gradle
         run: |
-          GRADLE_FILE="androidApp/build.gradle.kts" 
+          GRADLE_FILE="androidApp/build.gradle.kts"
           VERSION_NAME=$(grep -E 'val appVersionName' $GRADLE_FILE | head -n 1 | awk -F'"' '{print $2}')
 
           if [ -z "$VERSION_NAME" ]; then
@@ -47,15 +47,15 @@ jobs:
           VERSION="${{ env.VERSION_NAME }}"
           CHANGELOG_FILE="CHANGELOG.md"
           OUTPUT_FILE="commit.txt"
-          
+
           sed -n "/## ${VERSION}/, /## [0-9]/p" ${CHANGELOG_FILE} | \
           sed '1d;$d' | \
           grep -v '^# Changelog' > ${OUTPUT_FILE}
-        
+
           if [ ! -s "${OUTPUT_FILE}" ]; then
             echo "::warning file=${CHANGELOG_FILE}::Could not find changelog for version ${VERSION}. commit.txt will be empty."
           fi
-        
+
           echo "Changelog extracted to commit.txt"
 
       - name: Cook KeyStore
@@ -74,27 +74,21 @@ jobs:
           -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
           -Pandroid.injected.signing.key.alias=key0 \
           -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
-          
-          ./gradlew :desktopApp:packageReleaseDistributionForCurrentOS
-          
+
           APK_PATH=$(find androidApp/build/outputs/ -name "*.apk" -print -quit)
-          APPIMAGE_PATH=$(find desktopApp/build/compose/binaries/main-release/AppImage/ -name "*.AppImage" -print -quit)
-          
+
           if [ -z "$APK_PATH" ]; then
             echo "::error::Could not find APK file."
             exit 1
           fi
-          
+
           echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
-          echo "APPIMAGE_PATH=$APPIMAGE_PATH" >> $GITHUB_ENV
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: rush-release
-          path: |
-            androidApp/build/outputs/apk/foss/release/*.apk
-            desktopApp/build/compose/binaries/main-release/AppImage/*.AppImage
+          path: androidApp/build/outputs/apk/foss/release/*.apk
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -103,15 +97,13 @@ jobs:
           tag_name: ${{ env.VERSION_NAME }}
           name: ${{ env.VERSION_NAME }}
           body_path: commit.txt
-          files: |
-            ${{ env.APK_PATH }}
-            ${{ env.APPIMAGE_PATH }}
+          files: ${{ env.APK_PATH }}
 
       - name: Notify on Discord
         shell: bash
         env:
           WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          message=$(echo "**New Rush Release** **${{ env.VERSION_NAME }}** \nhttps://github.com/shub39/Rush/releases")
+          message=$(echo "**New Rush Release** **${{ env.VERSION_NAME }}** \nhttps://github.com/thejaustin/Rush/releases")
           curl -F "payload_json={\"content\":\"${message}\"}" \
           ${{ env.WEBHOOK }}
