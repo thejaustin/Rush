@@ -1,11 +1,13 @@
 # Changelog
 
-## 7.0.8
+## 7.0.9
+- Fixed share card preview being hidden behind the action toolbar on long text
+- Brat and Messy share cards now show all selected lines instead of just the first
+- Messy card uses all selected lines as word pool; CardFit now works for it
 - Fixed fullscreen toggle not updating system bars
 - Fixed lyrics source toggle also disabling sync
 - Removed redundant type filter in Genius search results
 - Performance improvement: avoid Regex allocation in TTML parser hot path
-- Removed unused import in SearchResultCard
 - Miscellaneous cleanup
 
 ## 7.0.7
