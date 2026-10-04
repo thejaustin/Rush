@@ -1,5 +1,13 @@
 # Changelog
 
+## 7.0.8
+- Fixed fullscreen toggle not updating system bars
+- Fixed lyrics source toggle also disabling sync
+- Removed redundant type filter in Genius search results
+- Performance improvement: avoid Regex allocation in TTML parser hot path
+- Removed unused import in SearchResultCard
+- Miscellaneous cleanup
+
 ## 7.0.7
 - Fixed crashes in lower android versions
 - Removed Onboarding and Changelog Sheets
