@@ -107,8 +107,6 @@ fun Actions(
                         if (state.source == Sources.LRCLIB) Sources.GENIUS else Sources.LRCLIB
                     )
                 )
-
-                action(LyricsPageAction.OnSync(false))
             }
         ) {
             if (state.source == Sources.GENIUS) {

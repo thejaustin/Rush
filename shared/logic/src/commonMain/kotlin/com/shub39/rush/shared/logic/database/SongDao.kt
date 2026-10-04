@@ -38,8 +38,8 @@ interface SongDao {
     @Query("SELECT * FROM songs WHERE title LIKE '%' || :query || '%'")
     suspend fun searchSong(query: String): List<SongEntity>
 
-    @Query("UPDATE songs SET lyrics = :async WHERE id = :id")
-    suspend fun updatePlainLyricsById(id: Long, async: String)
+    @Query("UPDATE songs SET lyrics = :lyrics WHERE id = :id")
+    suspend fun updatePlainLyricsById(id: Long, lyrics: String)
 
     @Query("UPDATE songs SET ttmlLyrics = :ttmlLyrics, syncedLyrics = NULL WHERE id = :id")
     suspend fun updateTTMLLyricsById(id: Long, ttmlLyrics: String)

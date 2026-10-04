@@ -1,5 +1,10 @@
 # Changelog
 
+## 7.1.0
+- Fixed lyrics source toggle incorrectly disabling sync (7.0.9 regression)
+- Fixed lyrics correction dialog missing results when instrumental field is null
+- Renamed misleading DAO parameter (internal cleanup)
+
 ## 7.0.9
 - Fixed share card preview being hidden behind the action toolbar on long text
 - Brat and Messy share cards now show all selected lines instead of just the first

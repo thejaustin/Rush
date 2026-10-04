@@ -162,7 +162,7 @@ class RushRepository(
         when (lrcResults) {
             is Result.Success -> {
                 lrcResults.data
-                    .filter { it.instrumental == false }
+                    .filter { it.instrumental != true }
                     .forEach { dto ->
                         if (dto.syncedLyrics != null) {
                             searchResults =
