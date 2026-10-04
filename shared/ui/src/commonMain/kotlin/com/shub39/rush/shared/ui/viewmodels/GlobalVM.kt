@@ -172,13 +172,6 @@ class GlobalVM(
                         _state.update { it.copy(theme = it.theme.copy(materialTheme = pref)) }
                     }
                     .launchIn(this)
-
-                otherPreferences
-                    .getSeedColorFlow()
-                    .onEach { pref ->
-                        _state.update { it.copy(theme = it.theme.copy(seedColor = pref)) }
-                    }
-                    .launchIn(this)
             }
     }
 }

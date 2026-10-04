@@ -115,7 +115,7 @@ class LyricsPlusApi {
                     }
                 }
 
-                RushLogger.e(TAG, "No Results, title: $title,, artist: $artist")
+                RushLogger.e(TAG, "No Results, title: $title, artist: $artist")
                 Result.Error(SourceError.Network.REQUEST_FAILED)
             } catch (e: Exception) {
                 RushLogger.e(TAG, "Error while fetching", e)

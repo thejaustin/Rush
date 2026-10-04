@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("Export")
-data class ExportSchema(val schemaVersion: Int = 3, val songs: List<SongSchema>)
+data class ExportSchema(val schemaVersion: Int = 4, val songs: List<SongSchema>)
 
 @Serializable
 @SerialName("Song")
