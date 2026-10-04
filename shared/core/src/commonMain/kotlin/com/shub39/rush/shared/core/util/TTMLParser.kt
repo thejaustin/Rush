@@ -101,7 +101,7 @@ object TTMLParser {
                                 ) {
                                     val nextPart = pContent.substring(child.range.last + 1)
                                     val hasTrailingSpace =
-                                        nextPart.takeWhile { it != '<' }.contains(Regex("\\s"))
+                                        nextPart.takeWhile { it != '<' }.any { it.isWhitespace() }
 
                                     spanInfos.add(
                                         SpanInfo(
@@ -184,7 +184,7 @@ object TTMLParser {
 
                 if (wordText.isNotEmpty() && wordBegin.isNotEmpty() && wordEnd.isNotEmpty()) {
                     val nextPart = content.substring(child.range.last + 1)
-                    val hasTrailingSpace = nextPart.takeWhile { it != '<' }.contains(Regex("\\s"))
+                    val hasTrailingSpace = nextPart.takeWhile { it != '<' }.any { it.isWhitespace() }
 
                     spanInfos.add(
                         SpanInfo(
