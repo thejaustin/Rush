@@ -22,6 +22,12 @@ import com.shub39.rush.shared.core.dataclasses.SpanInfo
 
 object TTMLParser {
 
+    private val pRegex = Regex("""(?s)<p\s+([^>]*)>(.*?)</p>""")
+    private val childRegex = Regex("""(?s)<span\s+([^>]*)>(.*?)</span>|([^<]+)""")
+    private val attrRegex = Regex("""([\w:]+)="([^"]*)"""")
+    private val spanRegex = Regex("""(?s)<span\s+([^>]*)>(.*?)</span>""")
+    private val tagRegex = Regex("""<[^>]+>""")
+
     fun isValidTTML(ttml: String): Boolean {
         val parsedLines = parseTTML(ttml)
         return parsedLines.any { it.words.isNotEmpty() }
@@ -36,7 +42,6 @@ object TTMLParser {
 
     private fun parseAttributes(attrStr: String): Map<String, String> {
         val attrs = mutableMapOf<String, String>()
-        val attrRegex = Regex("""([\w:]+)="([^"]*)"""")
         attrRegex.findAll(attrStr).forEach { match ->
             attrs[match.groupValues[1]] = unescapeHtml(match.groupValues[2])
         }
@@ -47,9 +52,6 @@ object TTMLParser {
         val lines = mutableListOf<ParsedLine>()
 
         try {
-            // Using (?s) flag for DOT_MATCHES_ALL as it's more cross-platform compatible in some
-            // Kotlin versions
-            val pRegex = Regex("""(?s)<p\s+([^>]*)>(.*?)</p>""")
             val pMatches = pRegex.findAll(ttml)
 
             for (pMatch in pMatches) {
@@ -66,7 +68,6 @@ object TTMLParser {
 
                 val agent = pAttributes.getAttributeByLocalName("agent").ifEmpty { null }
 
-                val childRegex = Regex("""(?s)<span\s+([^>]*)>(.*?)</span>|([^<]+)""")
                 val children = childRegex.findAll(pContent)
 
                 for (child in children) {
@@ -165,7 +166,6 @@ object TTMLParser {
         val bgStartTime = if (bgBegin.isNotEmpty()) parseTime(bgBegin) else parentStartTime
 
         val spanInfos = mutableListOf<SpanInfo>()
-        val childRegex = Regex("""(?s)<span\s+([^>]*)>(.*?)</span>|([^<]+)""")
         val children = childRegex.findAll(content)
 
         for (child in children) {
@@ -215,7 +215,6 @@ object TTMLParser {
     }
 
     private fun getDirectTextContent(content: String): String {
-        val spanRegex = Regex("""(?s)<span\s+([^>]*)>(.*?)</span>""")
         val sb = StringBuilder()
         var lastIndex = 0
         spanRegex.findAll(content).forEach { match ->
@@ -232,7 +231,7 @@ object TTMLParser {
             lastIndex = match.range.last + 1
         }
         sb.append(content.substring(lastIndex))
-        return unescapeHtml(sb.toString().replace(Regex("""<[^>]+>"""), ""))
+        return unescapeHtml(sb.toString().replace(tagRegex, ""))
     }
 
     private fun mergeSpansIntoWords(spanInfos: List<SpanInfo>): List<ParsedWord> {
